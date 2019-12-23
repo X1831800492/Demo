@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace属性:对应的接口文件的全名 -->
+<mapper namespace="cn.tedu.store.mapper.DistrictMapper">
+<!-- 获取全国所有的省/某省所有的市/某市所有的区的数据列表 -->
+<!-- List<District> findByParent(String parent); -->
+<select id="findByParent" resultType="cn.tedu.store.entity.District">
+select * from t_dict_district where parent = #{parent} order by code 
+</select>
+
+<!--根据省/市/区获取对应的名称 -->
+<!-- String findNameByCode(String Code);  -->
+<select id="findNameByCode" resultType="java.lang.String">
+	select name from t_dict_district where code = #{code} 
+</select>
+
+
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace属性:对应的接口文件的全名 -->
+<mapper namespace="cn.tedu.store.mapper.UserMapper">
+	<!--插入用户数据 -->
+	<!--Integer insert(User user) -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="uid">
+		insert   t_user(
+		username,password,salt ,gender ,
+		phone, email ,avatar ,is_delete ,created_user ,
+		created_time ,modified_user ,modified_time )
+		values(
+		#{username},#{password},#{salt} ,#{gender} ,
+		#{phone}, #{email} ,#{avatar} ,#{isDelete} ,
+		#{createdUser},#{createdTime} ,#{modifiedUser} ,#{modifiedTime});
+	</insert>
+	<!-- 更新某用户的密码 -->
+	<!-- Integer updatePasswordByUid(@Param("uid")Integer uid,
+			@Param("password")String password,
+			@Param("modifiedUser")String modifiedUser,
+			@Param("modifiedTime")Date modifiedTime); -->
+	<update id="updatePasswordByUid">
+	update t_user set password=#{password}, modified_user=#{modifiedUser},modified_time=#{modifiedTime}
+	where uid=#{uid};
+	
+	</update>
+	
+	<!-- 更新某用户的头像 -->
+	<!-- Integer updateAvatarByUid(@Param("uid")Integer uid,
+			@Param("password")String avatar,
+			@Param("modifiedUser")String modifiedUser,
+			@Param("modifiedTime")Date modifiedTime); -->
+	<update id="updateAvatarByUid">
+	update t_user set avatar=#{avatar}, modified_user=#{modifiedUser},modified_time=#{modifiedTime}
+	where uid=#{uid};
+	
+	</update>
+	<!-- 修改用户资料-->
+	<!-- Integer updateInfoByUid(User user); -->
+	<update id="updateInfoByUid">
+		update t_user 
+		set 
+		<if test="phone !=null">
+		phone=#{phone},
+		</if>
+		<if test="email !=null">
+		email=#{email},
+		</if>
+		<if test="gender !=null">
+		gender=#{gender},
+		</if>
+		modified_user=#{modifiedUser},
+		modified_time=#{modifiedTime}
+		where uid=#{uid};
+	</update>
+	
+	<!-- 根据用户id查询用户数据 -->
+	<!-- User findByUid(Integer uid); -->
+	<select id="findByUid" resultMap="findByUidd">
+	select * from t_user where uid=#{uid}
+	</select>
+	<resultMap type="cn.tedu.store.entity.User" id="findByUidd">
+		<id column="uid" property="uid"/>
+		<result column="is_delete" property="isDelete"/>
+		<result column="created_user" property="createdUser"/>
+		<result column="created_time" property="createdTime"/>
+		<result column="modified_user" property="modifiedUser"/>
+		<result column="modified_time" property="modifiedTime"/>
+	</resultMap>
+	
+	
+	<!--根据用户名查询用户数据  -->
+	<!--User findByUsername(String username)  -->
+	<select id="findByUsername" resultMap="UserEntityMap">
+		select * from t_user where username=#{username};
+	</select>
+	<resultMap type="cn.tedu.store.entity.User" id="UserEntityMap">
+		<id column="uid" property="uid"/>
+		<result column="is_delete" property="isDelete"/>
+		<result column="created_user" property="createdUser"/>
+		<result column="created_time" property="createdTime"/>
+		<result column="modified_user" property="modifiedUser"/>
+		<result column="modified_time" property="modifiedTime"/>
+	
+	</resultMap>
+	
+	
+	
+</mapper>

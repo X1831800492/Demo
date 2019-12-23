@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace属性:对应的接口文件的全名 -->
+<mapper namespace="cn.tedu.store.mapper.ProductMapper">
+<resultMap type="cn.tedu.store.entity.Product" id="ProductMapper">
+	<id column="id"  property="id"/>
+	<result column="category_id"  property="categoryId"/>
+	<result column="item_type"  property="itemType"/>
+	<result column="sell_point"  property="sellPoint"/>
+	<result column="created_user"  property="createdUser"/>
+	<result column="created_time"  property="createdTime"/>
+	<result column="modified_user"  property="modifiedUser"/>
+	<result column="modified_time"  property="modifiedTime"/>
+</resultMap>
+<!--获取新到好货列表  -->
+<!--List<Product> findNewList(Integer id)-->
+<select id="findNewList" resultMap="ProductMapper">
+	select * from t_product where status=1 order by created_time desc limit 0, 4
+</select>
+<!--  -->
+<!--  -->
+<select id="findById" resultMap="ProductMapper">
+	select * from t_product where id =#{id}
+</select>
+</mapper>
